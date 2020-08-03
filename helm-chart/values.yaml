@@ -12,8 +12,10 @@ image:
 
 kafka:
   producer:
-    # kafka topic to produce to
+    # kafka topic to produce message to
     topic: test
+    # kafka topic to produce encrypted message to
+    encryptedTopic: test-encrypted
     # kafka config to create producer
     config: |
       bootstrap.servers=localhost:9092

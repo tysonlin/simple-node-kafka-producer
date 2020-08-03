@@ -38,6 +38,10 @@ spec:
               value: "/config/kafka.config"
             - name: KAFKA_PRODUCE_TOPIC
               value: {{ .Values.kafka.producer.topic }}
+            {{- if .Values.kafka.producer.encryptedTopic }}
+            - name: KAFKA_PRODUCE_ENCRYPTED_TOPIC
+              value: {{ .Values.kafka.producer.encryptedTopic }}
+            {{- end }}
             {{- if .Values.kafka.producer.ccloud }}
             - name: CLUSTER_API_KEY
               valueFrom:
