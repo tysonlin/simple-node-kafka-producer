@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const readline = require('readline');
+const logger = require('./logger');
 
 function readAllLines(path) {    
     return new Promise((resolve, reject) => {
@@ -9,7 +10,7 @@ function readAllLines(path) {
 
       let stream = fs.createReadStream(path);
       stream.on('error', (err) => {
-        console.warn('Read stream err', err);
+        logger.warn('Read stream err', err);
         resolve([ 'bootstrap.servers=localhost:9092' ]);
       });
       

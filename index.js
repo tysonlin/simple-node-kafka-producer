@@ -21,6 +21,8 @@ const metricsMiddleware = promBundle({
     metricType: "summary"
 });
 
+const logger = require('./logger');
+
 // kafka producer init
 let producer;
 
@@ -28,10 +30,10 @@ let producer;
     let config = await require('./config').readKafkaConfig(process.env.KAFKA_CONFIG_PATH || 'localhost.config');
     producer = await require('./producer').createProducer(config, (err, report) => {
         if (err) {
-          console.warn('Error producing', err)
+          logger.warn('Error producing', err)
         } else {
           const {topic, partition, value} = report;
-          console.log(`Successfully produced record to topic "${topic}" partition ${partition} ${value}`);
+          logger.info(`Successfully produced record to topic "${topic}" partition ${partition} ${value}`);
         }
       });
 })();

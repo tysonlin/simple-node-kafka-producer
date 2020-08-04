@@ -2,6 +2,8 @@
 
 const Kafka = require('node-rdkafka');
 
+const logger = require('./logger');
+
 let producer;
 
 exports.createProducer = (config, onDeliveryReport) => {
@@ -17,19 +19,19 @@ exports.createProducer = (config, onDeliveryReport) => {
 
     let producerOptions = Object.assign(config, envDefaultOptions);
 
-    console.debug(`Creating producer with config ${JSON.stringify(producerOptions)}`);
+    logger.debug(`Creating producer with config ${JSON.stringify(producerOptions)}`);
 
     producer = new Kafka.Producer(producerOptions);
   
     return new Promise((resolve, reject) => {
       producer
         .on('ready', () => {
-            console.debug('Producer ready!');
+            logger.debug('Producer ready!');
             resolve(producer);
         })
         .on('delivery-report', onDeliveryReport)
         .on('error', (err) => {
-          console.warn('event.error', err);
+          logger.warn('event.error', err);
           reject(err);
         });
       producer.connect();

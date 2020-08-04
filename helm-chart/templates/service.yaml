@@ -4,10 +4,23 @@ metadata:
   name: {{ include "helm-chart.fullname" . }}
   labels:
     {{- include "helm-chart.labels" . | nindent 4 }}
+{{- with .Values.service.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+{{- end }}
+  
 spec:
   type: {{ .Values.service.type }}
+  {{- with .Values.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   ports:
+  {{- if eq .Values.service.type "LoadBalancer" }}
+    - port: {{ .Values.service.externalPort }}
+  {{- else }}
     - port: {{ .Values.service.port }}
+  {{- end }}
       targetPort: http
       protocol: TCP
       name: http
