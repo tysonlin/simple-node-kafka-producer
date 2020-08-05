@@ -14,7 +14,8 @@ exports.createProducer = (config, onDeliveryReport) => {
         'security.protocol': config['security.protocol'] || 
                             (process.env.CLUSTER_API_KEY && process.env.CLUSTER_API_SECRET)? 'SASL_SSL' :'PLAINTEXT',
         'sasl.mechanisms': config['sasl.mechanisms'] || 'PLAIN',
-        'dr_msg_cb': config['dr_msg_cb'] || true
+        'dr_msg_cb': config['dr_msg_cb'] || true,
+        'statistics.interval.ms': config['statistics.interval.ms'] || 1000,
       };
 
     let producerOptions = Object.assign(config, envDefaultOptions);

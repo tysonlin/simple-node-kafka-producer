@@ -14,11 +14,19 @@
 
 const express = require("express");
 const app = express();
+
+const RdkafkaStats = require('node-rdkafka-prometheus');
+const rdkafkaStats = new RdkafkaStats();
+
 const promBundle = require("express-prom-bundle");
 const metricsMiddleware = promBundle({
     includeMethod: true,
     includePath: true,
-    metricType: "summary"
+    metricType: "summary",
+    promClient: {
+        collectDefaultMetrics: {
+        }
+    },
 });
 
 const logger = require('./logger');
@@ -35,6 +43,12 @@ let producer;
           const {topic, partition, value} = report;
           logger.info(`Successfully produced record to topic "${topic}" partition ${partition} ${value}`);
         }
+      });
+
+    // register producer stats
+    producer.on('event.stats', msg => {
+        let stats = JSON.parse(msg.message);
+        rdkafkaStats.observe(stats);
       });
 })();
 
