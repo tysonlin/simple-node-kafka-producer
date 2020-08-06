@@ -50,6 +50,10 @@ let producer;
         let stats = JSON.parse(msg.message);
         rdkafkaStats.observe(stats);
       });
+
+    let pollInterval = process.env.PRODUCER_POLL_INTERVAL - 0 || 500;
+
+    producer.setPollInterval(pollInterval);
 })();
 
 // health endpoint
@@ -99,7 +103,6 @@ app.post("/produceEncrypted", (req, res) => {
     producer.produce(process.env.KAFKA_PRODUCE_ENCRYPTED_TOPIC || 
         process.env.KAFKA_PRODUCE_TOPIC || 'test', 
         -1, bufferedEncryptedResult, key);
-    producer.flush();
 
     res.status(202).json({ postedMessage: { key, value } });
 });
