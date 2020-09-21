@@ -2,7 +2,7 @@ language: ruby
 services:
 - docker
 before_install:
-- echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+- echo "$DOCKER_PASSWORD" | docker login --username tysonlin --password-stdin
 - docker build -t tysonlin/simple-node-kafka-producer .
 - docker tag tysonlin/simple-node-kafka-consumer tysonlin/simple-node-kafka-consumer:latest
 script:
