@@ -71,8 +71,9 @@ app.post("/produce", (req, res) => {
     let key = req.body.key || 'default-key';
     let value = req.body.value || { "default": "message" };
     let bufferedValue = Buffer.from(JSON.stringify(value), 'utf-8');
+    let topicName = req.body.topic || process.env.KAFKA_PRODUCE_TOPIC || 'test';
     
-    producer.produce(process.env.KAFKA_PRODUCE_TOPIC || 'test', -1, bufferedValue, key);
+    producer.produce(topicName, -1, bufferedValue, key);
     producer.flush();
 
     res.status(202).json({ postedMessage: { key, value } });
@@ -88,6 +89,8 @@ const cryptoIv = process.env.CRYPTO_IV || crypto.randomBytes(16);
 app.post("/produceEncrypted", (req, res) => {
     let key = req.body.key || 'default-key';
     let value = req.body.value || { "default": "message" };
+    let topicName = req.body.topic || process.env.KAFKA_PRODUCE_ENCRYPTED_TOPIC|| 
+                    process.env.KAFKA_PRODUCE_TOPIC || 'test';
 
     let algorithm = req.body.algorithm || 'aes-256-cbc';
 
@@ -100,8 +103,7 @@ app.post("/produceEncrypted", (req, res) => {
 
     let bufferedEncryptedResult = Buffer.from(encrypted.toString('hex'));
     
-    producer.produce(process.env.KAFKA_PRODUCE_ENCRYPTED_TOPIC || 
-        process.env.KAFKA_PRODUCE_TOPIC || 'test', 
+    producer.produce(topicName , 
         -1, bufferedEncryptedResult, key);
 
     res.status(202).json({ postedMessage: { key, value } });
