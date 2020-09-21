@@ -3,7 +3,7 @@ services:
 - docker
 before_install:
 - docker build -t tysonlin/simple-node-kafka-producer .
-- docker tag simple-node-kafka-consumer tysonlin/simple-node-kafka-consumer:latest
+- docker tag tysonlin/simple-node-kafka-consumer tysonlin/simple-node-kafka-consumer:latest
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 script:
 - docker push tysonlin/simple-node-kafka-producer:latest
