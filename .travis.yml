@@ -5,7 +5,7 @@ before_install:
 - echo $DOCKER_USERNAME
 - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
 - docker build -t "$DOCKER_USERNAME"/simple-node-kafka-producer .
-- docker tag "$DOCKER_USERNAME"/simple-node-kafka-consumer "$DOCKER_USERNAME"/simple-node-kafka-consumer:latest
+- docker tag "$DOCKER_USERNAME"/simple-node-kafka-producer "$DOCKER_USERNAME"/simple-node-kafka-producer:latest
 script:
 - docker push "$DOCKER_USERNAME"/simple-node-kafka-producer:latest
 env:
