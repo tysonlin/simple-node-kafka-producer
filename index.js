@@ -65,12 +65,27 @@ app.use(express.json())
 app.use(metricsMiddleware);
 
 // POST /produce
-// post raw message to Kafka
+// post JSON message to Kafka
 // calls to this route will appear in metrics
 app.post("/produce", (req, res) => {
     let key = req.body.key || 'default-key';
     let value = req.body.value || { "default": "message" };
     let bufferedValue = Buffer.from(JSON.stringify(value), 'utf-8');
+    let topicName = req.body.topic || process.env.KAFKA_PRODUCE_TOPIC || 'test';
+    
+    producer.produce(topicName, -1, bufferedValue, key);
+    producer.flush();
+
+    res.status(202).json({ postedMessage: { key, value } });
+});
+
+// POST /produce
+// post raw message to Kafka
+// calls to this route will appear in metrics
+app.post("/produceRaw", (req, res) => {
+    let key = req.body.key || 'default-key';
+    let value = req.body.value || 'default message';
+    let bufferedValue = Buffer.from(value, 'utf-8');
     let topicName = req.body.topic || process.env.KAFKA_PRODUCE_TOPIC || 'test';
     
     producer.produce(topicName, -1, bufferedValue, key);

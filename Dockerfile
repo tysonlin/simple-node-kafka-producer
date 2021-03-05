@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:14-alpine
 
 # node-rdkafka dependencies
 RUN apk --no-cache add \
