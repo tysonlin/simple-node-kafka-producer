@@ -11,8 +11,11 @@ exports.createProducer = (config, onDeliveryReport) => {
         'bootstrap.servers': process.env.BROKER_ENDPOINT || config['bootstrap.servers'],
         'sasl.username': process.env.CLUSTER_API_KEY || config['sasl.username'],
         'sasl.password': process.env.CLUSTER_API_SECRET || config['sasl.password'],
-        'security.protocol': config['security.protocol'] || 
-                            (process.env.CLUSTER_API_KEY && process.env.CLUSTER_API_SECRET)? 'SASL_SSL' :'PLAINTEXT',
+        'security.protocol': config['security.protocol']? 
+                                                  config['security.protocol'] : 
+                            (process.env.CLUSTER_API_KEY && process.env.CLUSTER_API_SECRET)? 
+                                                  'SASL_SSL' :
+                                                  'PLAINTEXT',
         'sasl.mechanisms': config['sasl.mechanisms'] || 'PLAIN',
         'dr_msg_cb': config['dr_msg_cb'] || true,
         'statistics.interval.ms': config['statistics.interval.ms'] || 1000,
