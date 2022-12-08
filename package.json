@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/tysonlin/simple-node-kafka-producer#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "express-prom-bundle": "^6.0.0",
     "node-rdkafka": "^2.9.0",
     "node-rdkafka-prometheus": "^1.0.0",
